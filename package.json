@@ -2,14 +2,25 @@
   "name": "jupyterlab-spreadsheet",
   "version": "0.0.1",
   "description": "Adds a spreadsheet viewer to JupyterLab",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "jupyterlab": {
+    "extension": true
+  },
+  "files": [
+    "lib/*.js"
+  ],
   "repository": "https://github.com/quigleyj97/jupyterlab-spreadsheet",
   "author": "Joe Quigley",
   "license": "BSD-3-Clause",
   "private": false,
   "dependencies": {
+    "@jupyterlab/application": "^0.19.1",
+    "@jupyterlab/apputils": "^0.19.1",
     "@jupyterlab/docregistry": "^0.19.1",
     "@phosphor/widgets": "^1.6.0",
+    "xlsx": "^0.14.0"
+  },
+  "devDependencies": {
     "tslint": "^5.11.0",
     "typescript": "^3.1.3"
   }
