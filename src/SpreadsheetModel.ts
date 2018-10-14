@@ -81,6 +81,27 @@ export class SpreadsheetModel extends DocumentModel {
         return records;
     }
 
+    /**
+     * Returns a SlickGrid column config, respecting formatting options in the sheet
+     * @param sheetData The worksheet to generate the columns from
+     */
+    public getColumnConfig(sheetData: WorkSheet): SpreadsheetModelNS.ColumnList {
+        const range = this.getExtent(sheetData);
+        const config: SpreadsheetModelNS.ColumnList = [];
+        for (let i = range.s.c; i < range.e.c; i++) {
+            const colName = utils.encode_col(i);
+            config.push({
+                // we use type casts because we need this to be a number
+                // the typings in this case are too strict
+                id: i as any,
+                name: colName,
+                field: i as any,
+                width: (sheetData["!cols"] || {} as any)[colName]
+            });
+        }
+        return config;
+    }
+
     private handleContentChanged() {
         this._workbook = read(this.value.text);
         this._workbookContentChanged.emit(void 0);
@@ -100,4 +121,6 @@ export namespace SpreadsheetModelNS {
         /** The index of this row */
         id: number;
     }
+
+    export type ColumnList = Array<Slick.Column<SpreadsheetData>>;
 }
