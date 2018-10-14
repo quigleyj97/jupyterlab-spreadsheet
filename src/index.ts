@@ -8,6 +8,8 @@ function activateSpreadsheet(app: JupyterLab) {
         modelName: "workbook",
         fileTypes: [
             "excel",
+            "csv",
+            "dsv"
         ],
         defaultFor: [
             "excel",
