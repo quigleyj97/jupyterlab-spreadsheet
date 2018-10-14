@@ -74,7 +74,7 @@ export class SpreadsheetModel extends DocumentModel {
             const row: SpreadsheetModelNS.SpreadsheetData = Object.assign([], {id: r});
             for (let c = 0; c < n_cols; c++) {
                 const cell = utils.encode_cell({c, r});
-                row[c] = sheetData[cell];
+                row[c] = (sheetData[cell] || {v: null}).v;
             }
             records.push(row);
         }
