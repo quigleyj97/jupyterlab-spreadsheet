@@ -1,5 +1,9 @@
 import { Widget } from "@phosphor/widgets";
 import { SpreadsheetModelNS, SpreadsheetModel } from "./SpreadsheetModel";
+//#region SlickGrid ambient imports
+// Because SlickGrid isn't exactly WebPack friendly, comes as a global module, predates NPM, and
+// makes even the most elderly of frameworks feel young, we need to structure our imports
+// carefully. It comes with bundled verions of JQuery and JQuery UI, so we load those first.
 import "slickgrid/lib/jquery-1.8.3.js";
 import "slickgrid/lib/jquery.event.drag-2.2.js";
 import "slickgrid/lib/jquery-ui-1.9.2.js";
@@ -7,6 +11,9 @@ import "slickgrid/slick.core.js";
 import "slickgrid/slick.dataview.js";
 import "slickgrid/slick.grid.js";
 import "slickgrid/slick.grid.css";
+//#endregion
+// CSS style import
+import "../style/GridStyle.css";
 
 export class SpreadsheetWidget extends Widget {
     private readonly view: Slick.Data.DataView<SpreadsheetModelNS.SpreadsheetData>;
@@ -27,7 +34,6 @@ export class SpreadsheetWidget extends Widget {
     public initialize() {
         this.loadDataIntoView();
         this.renderGrid();
-        console.log("Data loaded", this.view);
     }
 
     public dispose() {
@@ -57,6 +63,7 @@ export class SpreadsheetWidget extends Widget {
 
     private renderGrid() {
         this.grid = new Slick.Grid(this.node, this.view, this.columnConfig!, {});
+        this.grid.getCanvasNode().classList.add("sp-Grid");
     }
 }
 

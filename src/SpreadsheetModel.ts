@@ -74,7 +74,15 @@ export class SpreadsheetModel extends DocumentModel {
             const row: SpreadsheetModelNS.SpreadsheetData = Object.assign([], {id: r});
             for (let c = 0; c < n_cols; c++) {
                 const cell = utils.encode_cell({c, r});
-                row[c] = (sheetData[cell] || {v: null}).v;
+                const cellData = sheetData[cell];
+                if (cellData == null) {
+                    // no data
+                    row[c] = null;
+                    continue;
+                }
+                // if a formatted string is available, use that
+                const cellValue = cellData.w || cellData.v;
+                row[c] = cellValue;
             }
             records.push(row);
         }
@@ -87,7 +95,16 @@ export class SpreadsheetModel extends DocumentModel {
      */
     public getColumnConfig(sheetData: WorkSheet): SpreadsheetModelNS.ColumnList {
         const range = this.getExtent(sheetData);
-        const config: SpreadsheetModelNS.ColumnList = [];
+        const config: SpreadsheetModelNS.ColumnList = [
+            {
+                // row number
+                id: "row",
+                name: "#",
+                field: "id",
+                cssClass: "sp-Row-Index",
+                headerCssClass: "sp-GridHeader"
+            }
+        ];
         for (let i = range.s.c; i < range.e.c; i++) {
             const colName = utils.encode_col(i);
             config.push({
@@ -96,7 +113,8 @@ export class SpreadsheetModel extends DocumentModel {
                 id: i as any,
                 name: colName,
                 field: i as any,
-                width: (sheetData["!cols"] || {} as any)[colName]
+                width: (sheetData["!cols"] || {} as any)[colName],
+                headerCssClass: "sp-GridHeader"
             });
         }
         return config;

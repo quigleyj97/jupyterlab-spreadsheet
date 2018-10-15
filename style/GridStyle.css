@@ -1,0 +1,14 @@
+.sp-Grid {
+    color: var(--jp-ui-font-color0);
+    background-color: var(--jp-rendermime-table-row-background);
+}
+
+.sp-GridHeader {
+    font-weight: bold;
+    background-color: var(--jp-border-color2);
+}
+
+.sp-Row-Index {
+    border-right-style: solid;
+    background-color: var(--jp-border-color2);
+}
