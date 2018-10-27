@@ -7,8 +7,10 @@ import {
 import { SpreadsheetModel } from "./SpreadsheetModel";
 import { SpreadsheetWidget } from "./SpreadsheetWidget";
 
-export class SpreadsheetWidgetFactory extends ABCWidgetFactory<IDocumentWidget<SpreadsheetWidget>,
-                                                               SpreadsheetModel> {
+export class SpreadsheetWidgetFactory extends ABCWidgetFactory<
+                IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>,
+                SpreadsheetModel
+            > {
     protected createNewWidget(context: DocumentRegistry.IContext<SpreadsheetModel>) {
         const model = context.model;
         const content = new SpreadsheetWidget({model});
