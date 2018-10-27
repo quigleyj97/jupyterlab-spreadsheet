@@ -22,6 +22,7 @@ export class SpreadsheetWidget extends Widget {
 
     constructor({model}: SpreadsheetWidgetNS.IOptions) {
         super();
+        this.render();
         this.model = model;
         this.model.workbookChanged.connect(this.handleModelContentChanged, this);
     }
@@ -33,7 +34,6 @@ export class SpreadsheetWidget extends Widget {
         if (this.grid != null) {
             this.grid.destroy();
         }
-        // TODO: Should the model be disposed as well?
         this.model.workbookChanged.disconnect(this.handleModelContentChanged, this);
         super.dispose();
     }
@@ -52,7 +52,13 @@ export class SpreadsheetWidget extends Widget {
     }
 
     private handleModelContentChanged() {
-        this.render();
+        if (this.grid == null) {
+            // how should we handle this case? when does it occur?
+            return;
+        }
+        this.grid.invalidateAllRows();
+        this.grid.setColumns(this.model.getColumnConfig());
+        this.grid.render();
     }
 
     private render() {
