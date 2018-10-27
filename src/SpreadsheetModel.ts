@@ -2,10 +2,15 @@ import { read, WorkBook, WorkSheet, utils } from "xlsx";
 import { DocumentModel } from "@jupyterlab/docregistry";
 import { ModelDB } from "@jupyterlab/observables";
 import { Signal, ISignal } from "@phosphor/signaling";
+import { PromiseDelegate } from "@phosphor/coreutils";
 
-export class SpreadsheetModel extends DocumentModel {
+export class SpreadsheetModel
+            extends DocumentModel
+            implements Slick.DataProvider<SpreadsheetModelNS.SpreadsheetData> {
     private _workbook: WorkBook | undefined;
-    private _workbookContentChanged = new Signal<this, void>(this);
+    private _workbookChanged = new Signal<this, void>(this);
+    private _sheetChanged = new Signal<this, string>(this);
+    private _activeSheet: string | null = null;
 
     constructor({modelDB}: SpreadsheetModelNS.IOptions) {
         // don't create a kernel
@@ -15,10 +20,22 @@ export class SpreadsheetModel extends DocumentModel {
         this.readOnly = true;
     }
 
-    public get workbookContentChanged(): ISignal<this, void> {
-        return this._workbookContentChanged;
+    public get workbookChanged(): ISignal<this, void> {
+        return this._workbookChanged;
     }
 
+    /** A Signal that emits whenever the selected sheet has changed.
+     *
+     * Changes of this nature often require a re-render of the slickgrid
+     */
+    public get sheetChanged(): ISignal<this, string> {
+        return this._sheetChanged;
+    }
+
+    /**
+     * Dispose all resources held by this model, including the worksheet model.
+     * This will render the model unusable.
+     */
     public dispose() {
         if (this.isDisposed) {
             return;
@@ -29,29 +46,22 @@ export class SpreadsheetModel extends DocumentModel {
     }
 
     /**
-     * Retrieve an individual spreadsheet from a given workbook.
-     * @throws if sheetName is not included in the workbook
-     * @throws if the workbook is not defined (meaning, it hasn't yet been loaded)
-     * @param sheetName Name of a sheet in the file. Defaults to the first sheet
+     * Set the worksheet to display, and trigger the sheetChanged event.
+     * @see sheetChanged
      */
-    public getSheet(sheetName?: string) {
-        if (this._workbook == null) {
-            throw Error("Workbook not loaded");
-        }
-        if (sheetName == null) {
-            sheetName = this._workbook.SheetNames[0];
-        }
-        if (!(sheetName in this._workbook.Sheets)) {
-            throw Error("Sheet name " + sheetName + " not in workbook");
-        }
-        return this._workbook.Sheets[sheetName];
+    public setSheet(name: string) {
+        this._activeSheet = name;
     }
 
     /**
-     * Returns the extent of a sheet's data, so that views can calculate the required number of
-     * columns
+     * Returns the extent of the current sheet, so that views can calculate columns and
+     * row numbers.
      */
-    public getExtent(sheetData: WorkSheet) {
+    public getExtent() {
+        if (this._activeSheet == null || this._workbook == null) {
+            return {s: {c: 0, r: 0}, e: {c: 0, r: 0}};
+        }
+        const sheetData = this._workbook.Sheets[this._activeSheet];
         // if undefined, SheetJS spec allows us to assume it is empty
         // cf. https://github.com/SheetJS/js-xlsx#sheet-objects, "Special Sheet Keys"
         // TODO: Low: Inspect sheet data to attempt to guess at the true size
@@ -60,41 +70,50 @@ export class SpreadsheetModel extends DocumentModel {
     }
 
     /**
-     * Reads from the sheet and returns a JSON records format for direct consumption by SlickGrid.
-     * This operation is expensive, and should only be called on content updates.
+     * Returns the number of rows in the active worksheet
      */
-    public getSpreadsheetData(sheetData: WorkSheet) {
-        const range = this.getExtent(sheetData);
-        // `end.col - start.col` and `end.row - start.row`, respectively
-        const n_cols = range.e.c - range.s.c;
-        const n_rows = range.e.r - range.s.r;
-        // TODO: Performance: Audit this snippet on large datasets
-        const records = [];
-        for (let r = 0; r < n_rows; r++) {
-            const row: SpreadsheetModelNS.SpreadsheetData = Object.assign([], {id: r});
-            for (let c = 0; c < n_cols; c++) {
-                const cell = utils.encode_cell({c, r});
-                const cellData = sheetData[cell];
-                if (cellData == null) {
-                    // no data
-                    row[c] = null;
-                    continue;
-                }
-                // if a formatted string is available, use that
-                const cellValue = cellData.w || cellData.v;
-                row[c] = cellValue;
-            }
-            records.push(row);
+    public getLength() {
+        const extent = this.getExtent();
+        // `end.row - start.row`
+        return extent.e.r - extent.s.r;
+    }
+
+    /**
+     * Returns the SlickGrid model for a single row
+     */
+    public getItem(r: number): SpreadsheetModelNS.SpreadsheetData {
+        const rowModel: SpreadsheetModelNS.SpreadsheetData & Array<any> = Object.assign(
+            [],
+            {id: r}
+        );
+        if (this._workbook == null || this._activeSheet == null) {
+            return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
         }
-        return records;
+        const sheetData = this._workbook.Sheets[this._activeSheet];
+        const range = this.getExtent();
+        // `end.col - start.col`
+        const n_cols = range.e.c - range.s.c;
+        for (let c = 0; c < n_cols; c++) {
+            const cell = utils.encode_cell({r, c});
+            if (!(cell in sheetData)) {
+                continue;
+            }
+            const data = sheetData[cell];
+            rowModel.push(data.w || data.v);
+        }
+        return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
     }
 
     /**
      * Returns a SlickGrid column config, respecting formatting options in the sheet
      * @param sheetData The worksheet to generate the columns from
      */
-    public getColumnConfig(sheetData: WorkSheet): SpreadsheetModelNS.ColumnList {
-        const range = this.getExtent(sheetData);
+    public getColumnConfig(): SpreadsheetModelNS.ColumnList {
+        if (this._workbook == null || this._activeSheet == null) {
+            return [];
+        }
+        const sheetData = this._workbook.Sheets[this._activeSheet];
+        const range = this.getExtent();
         const config: SpreadsheetModelNS.ColumnList = [
             {
                 // row number
@@ -122,7 +141,8 @@ export class SpreadsheetModel extends DocumentModel {
 
     private handleContentChanged() {
         this._workbook = read(this.value.text);
-        this._workbookContentChanged.emit(void 0);
+        this._activeSheet = this._workbook.SheetNames[0];
+        this._workbookChanged.emit(void 0);
     }
 }
 

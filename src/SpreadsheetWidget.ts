@@ -16,7 +16,6 @@ import "slickgrid/slick.grid.css";
 import "../style/GridStyle.css";
 
 export class SpreadsheetWidget extends Widget {
-    private readonly view: Slick.Data.DataView<SpreadsheetModelNS.SpreadsheetData>;
     private readonly model: SpreadsheetModel;
     private columnConfig: SpreadsheetModelNS.ColumnList | undefined;
     private grid: Slick.Grid<SpreadsheetModelNS.SpreadsheetData> | undefined;
@@ -24,16 +23,7 @@ export class SpreadsheetWidget extends Widget {
     constructor({model}: SpreadsheetWidgetNS.IOptions) {
         super();
         this.model = model;
-        this.view = new Slick.Data.DataView();
-        this.model.workbookContentChanged.connect(this.handleModelContentChanged, this);
-    }
-
-    /**
-     * Setup the grid once the model has been loaded
-     */
-    public initialize() {
-        this.loadDataIntoView();
-        this.renderGrid();
+        this.model.workbookChanged.connect(this.handleModelContentChanged, this);
     }
 
     public dispose() {
@@ -44,25 +34,17 @@ export class SpreadsheetWidget extends Widget {
             this.grid.destroy();
         }
         // TODO: Should the model be disposed as well?
-        this.model.contentChanged.disconnect(this.handleModelContentChanged, this);
+        this.model.workbookChanged.disconnect(this.handleModelContentChanged, this);
         super.dispose();
     }
 
     private handleModelContentChanged() {
-        this.initialize();
+        this.render();
     }
 
-    private loadDataIntoView() {
-        const data = this.model.getSheet();
-        const rows = this.model.getSpreadsheetData(data);
-        this.columnConfig = this.model.getColumnConfig(data);
-        this.view.beginUpdate();
-        this.view.setItems(rows);
-        this.view.endUpdate();
-    }
-
-    private renderGrid() {
-        this.grid = new Slick.Grid(this.node, this.view, this.columnConfig!, {});
+    private render() {
+        this.columnConfig = this.model.getColumnConfig();
+        this.grid = new Slick.Grid(this.node, this.model, this.columnConfig!, {});
         this.grid.getCanvasNode().classList.add("sp-Grid");
     }
 }
