@@ -38,6 +38,19 @@ export class SpreadsheetWidget extends Widget {
         super.dispose();
     }
 
+    // TODO: The SlickGrid will might need to be reconstructed after a detatch/attach,
+    // but we have no handling for that right now.
+
+    protected onAfterShow() {
+        if (this.grid == null) return;
+        this.grid.render();
+    }
+
+    protected onResize() {
+        if (this.grid == null) return;
+        this.grid.resizeCanvas();
+    }
+
     private handleModelContentChanged() {
         this.render();
     }
