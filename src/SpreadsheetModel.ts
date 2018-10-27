@@ -2,7 +2,6 @@ import { read, WorkBook, WorkSheet, utils } from "xlsx";
 import { DocumentModel } from "@jupyterlab/docregistry";
 import { ModelDB } from "@jupyterlab/observables";
 import { Signal, ISignal } from "@phosphor/signaling";
-import { PromiseDelegate } from "@phosphor/coreutils";
 
 export class SpreadsheetModel
             extends DocumentModel
