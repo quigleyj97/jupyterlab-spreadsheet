@@ -12,3 +12,16 @@
     border-right-style: solid;
     background-color: var(--jp-border-color2);
 }
+
+.sp-Cell {
+    white-space: pre;
+}
+
+.sp-Cell-Number {
+    text-align: end;
+}
+
+.sp-Cell-Error {
+    font-weight: bold;
+    color: red;
+}

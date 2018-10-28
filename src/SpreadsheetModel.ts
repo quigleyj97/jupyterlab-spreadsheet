@@ -99,7 +99,7 @@ export class SpreadsheetModel
                 continue;
             }
             const data = sheetData[cell];
-            rowModel.push(data.w || data.v);
+            rowModel.push(data);
         }
         return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
     }
@@ -121,7 +121,8 @@ export class SpreadsheetModel
                 name: "#",
                 field: "id",
                 cssClass: "sp-Row-Index",
-                headerCssClass: "sp-GridHeader"
+                headerCssClass: "sp-GridHeader",
+                formatter: (cell, row, value) => value
             }
         ];
         for (let i = range.s.c; i < range.e.c; i++) {

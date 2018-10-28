@@ -14,6 +14,7 @@ import "slickgrid/slick.grid.css";
 //#endregion
 // CSS style import
 import "../style/GridStyle.css";
+import { SpreadsheetFormatter } from "./Formatter";
 
 export class SpreadsheetWidget extends Widget {
     private readonly model: SpreadsheetModel;
@@ -65,7 +66,10 @@ export class SpreadsheetWidget extends Widget {
 
     private render() {
         this.columnConfig = this.model.getColumnConfig();
-        this.grid = new Slick.Grid(this.node, this.model, this.columnConfig!, {});
+        this.grid = new Slick.Grid(this.node, this.model, this.columnConfig!, {
+            // Cast to any since the typings don't recognize "advanced" formatters
+            defaultFormatter: SpreadsheetFormatter as any
+        });
         this.grid.getCanvasNode().classList.add("sp-Grid");
     }
 }
