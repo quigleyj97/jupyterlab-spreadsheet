@@ -95,6 +95,7 @@ export class SpreadsheetModel
         for (let c = 0; c < n_cols; c++) {
             const cell = utils.encode_cell({r, c});
             if (!(cell in sheetData)) {
+                rowModel.push(null);
                 continue;
             }
             const data = sheetData[cell];

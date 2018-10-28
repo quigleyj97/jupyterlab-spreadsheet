@@ -22,9 +22,9 @@ export class SpreadsheetWidget extends Widget {
 
     constructor({model}: SpreadsheetWidgetNS.IOptions) {
         super();
-        this.render();
         this.model = model;
         this.model.workbookChanged.connect(this.handleModelContentChanged, this);
+        this.render();
     }
 
     public dispose() {
@@ -56,9 +56,11 @@ export class SpreadsheetWidget extends Widget {
             // how should we handle this case? when does it occur?
             return;
         }
-        this.grid.invalidateAllRows();
-        this.grid.setColumns(this.model.getColumnConfig());
-        this.grid.render();
+        // TODO: Better handling of model changes
+        // We do this because of a bug in SlickGrid#setColumns where the new columns have
+        // incorrect widths. Obviously this isn't ideal, but works for now.
+        this.grid.destroy();
+        this.render();
     }
 
     private render() {
