@@ -1,11 +1,16 @@
 {
   "name": "jupyterlab-spreadsheet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Adds a spreadsheet viewer to JupyterLab",
   "main": "lib/index.js",
   "jupyterlab": {
     "extension": true
   },
+  "keywords": [
+    "jupyterlab-extension",
+    "spreadsheet",
+    "excel"
+  ],
   "files": [
     "lib/*.js",
     "style/*.css"
