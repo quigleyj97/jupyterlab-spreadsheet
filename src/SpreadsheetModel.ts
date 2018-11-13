@@ -81,10 +81,7 @@ export class SpreadsheetModel
      * Returns the SlickGrid model for a single row
      */
     public getItem(r: number): SpreadsheetModelNS.SpreadsheetData {
-        const rowModel: SpreadsheetModelNS.SpreadsheetData & Array<any> = Object.assign(
-            [],
-            {id: r}
-        );
+        const rowModel: SpreadsheetModelNS.SpreadsheetData = {id: r};
         if (this._workbook == null || this._activeSheet == null) {
             return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
         }
@@ -94,12 +91,11 @@ export class SpreadsheetModel
         const n_cols = range.e.c - range.s.c;
         for (let c = 0; c < n_cols; c++) {
             const cell = utils.encode_cell({r, c});
-            if (!(cell in sheetData)) {
-                rowModel.push(null);
-                continue;
+            let data: unknown = null;
+            if (cell in sheetData) {
+                data = sheetData[cell];
             }
-            const data = sheetData[cell];
-            rowModel.push(data);
+            rowModel["c" + c] = data;
         }
         return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
     }
@@ -128,11 +124,9 @@ export class SpreadsheetModel
         for (let i = range.s.c; i < range.e.c; i++) {
             const colName = utils.encode_col(i);
             config.push({
-                // we use type casts because we need this to be a number
-                // the typings in this case are too strict
-                id: i as any,
+                id: "c" + i,
                 name: colName,
-                field: i as any,
+                field: "c" + i,
                 width: (sheetData["!cols"] || {} as any)[colName],
                 headerCssClass: "sp-GridHeader"
             });
@@ -155,8 +149,7 @@ export namespace SpreadsheetModelNS {
 
     export interface SpreadsheetData extends Slick.SlickData {
         /** The cells of this row */
-        [colIndex: number]: unknown;
-        length: number;
+        [colIndex: string]: unknown;
         /** The index of this row */
         id: number;
     }
