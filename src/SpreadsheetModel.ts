@@ -73,8 +73,8 @@ export class SpreadsheetModel
      */
     public getLength() {
         const extent = this.getExtent();
-        // `end.row - start.row`
-        return extent.e.r - extent.s.r;
+        // `end.row - start.row` plus one, since end is inclusive
+        return extent.e.r - extent.s.r + 1;
     }
 
     /**
@@ -89,7 +89,7 @@ export class SpreadsheetModel
         const range = this.getExtent();
         // `end.col - start.col`
         const n_cols = range.e.c - range.s.c;
-        for (let c = 0; c < n_cols; c++) {
+        for (let c = 0; c <= n_cols; c++) {
             const cell = utils.encode_cell({r, c});
             let data: unknown = null;
             if (cell in sheetData) {
@@ -118,10 +118,10 @@ export class SpreadsheetModel
                 field: "id",
                 cssClass: "sp-Row-Index",
                 headerCssClass: "sp-GridHeader",
-                formatter: (cell, row, value) => value
+                formatter: (cell, row, value) => "" + (1 + value)
             }
         ];
-        for (let i = range.s.c; i < range.e.c; i++) {
+        for (let i = range.s.c; i <= range.e.c; i++) {
             const colName = utils.encode_col(i);
             config.push({
                 id: "c" + i,
