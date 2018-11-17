@@ -25,3 +25,7 @@
     font-weight: bold;
     color: red;
 }
+
+.sp-Cell-MergeDown {
+    border-bottom-color: transparent;
+}

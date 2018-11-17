@@ -100,6 +100,33 @@ export class SpreadsheetModel
         return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
     }
 
+    public getItemMetadata(index: number): SpreadsheetModelNS.SpreadsheetMetadata {
+        const metadata: SpreadsheetModelNS.SpreadsheetMetadata = {
+            columns: {}
+        };
+        if (this._workbook == null || this._activeSheet == null) {
+            return Object.freeze(metadata);
+        }
+        const sheetData = this._workbook.Sheets[this._activeSheet];
+        if (sheetData["!merges"] == null) {
+            return Object.freeze(metadata);
+        }
+        const merges = sheetData["!merges"];
+        for (let i = 0; i < merges.length; i++) {
+            const merge = merges[i];
+            if (index < merge.s.r || merge.e.r < index) {
+                continue;
+            }
+            // whether the merge continues below this row
+            const mergeDown = merge.e.r - merge.s.r > 0 && index < merge.e.r;
+            metadata.columns!["c" + merge.s.c] = {
+                colspan: merge.e.c - merge.s.c + 1, //end inclusive
+                mergeDown
+            };
+        }
+        return Object.freeze(metadata);
+    }
+
     /**
      * Returns a SlickGrid column config, respecting formatting options in the sheet
      * @param sheetData The worksheet to generate the columns from
@@ -152,6 +179,16 @@ export namespace SpreadsheetModelNS {
         [colIndex: string]: unknown;
         /** The index of this row */
         id: number;
+    }
+
+    export interface SpreadsheetMetadata extends Slick.RowMetadata<SpreadsheetData> {
+        columns?: {
+            [colIndex: string]: SpreadsheetColumnMetadata;
+        };
+    }
+
+    export interface SpreadsheetColumnMetadata extends Slick.ColumnMetadata<SpreadsheetData> {
+        mergeDown?: boolean;
     }
 
     export type ColumnList = Array<Slick.Column<SpreadsheetData>>;

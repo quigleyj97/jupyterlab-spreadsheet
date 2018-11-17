@@ -1,4 +1,5 @@
 import { CellObject } from "xlsx/types";
+import { SpreadsheetModelNS, SpreadsheetModel } from "./SpreadsheetModel";
 
 /**
  * Grid formatter
@@ -32,16 +33,28 @@ import { CellObject } from "xlsx/types";
  *  - Error: Display the text in bold red
  */
 
-export function SpreadsheetFormatter(index: number, column: number, value: unknown) {
-    if (value == null) {
-        return "";
-    }
-    const cell = value as CellObject;
+export function SpreadsheetFormatter(index: number,
+                                     column: number,
+                                     value: unknown,
+                                     columnCfg: Slick.Column<SpreadsheetModelNS.SpreadsheetData>,
+                                     rowObject: SpreadsheetModelNS.SpreadsheetData,
+                                     grid: Slick.Grid<SpreadsheetModelNS.SpreadsheetData>) {
+    const cell = value as CellObject | null;
     const returnValue = {
         text: "",
         addClasses: "sp-Cell ",
-        removeClasses: "sp-Cell-Number sp-Cell-Error"
+        removeClasses: "sp-Cell-Number sp-Cell-Error sp-Cell-MergeDown"
     };
+    const metadata = (grid.getData() as SpreadsheetModel).getItemMetadata(index);
+    if (metadata.columns && columnCfg.id! in metadata.columns) {
+        // check mergeDown
+        if (metadata.columns[columnCfg.id!].mergeDown) {
+            returnValue.addClasses += "sp-Cell-MergeDown ";
+        }
+    }
+    if (cell == null) {
+        return returnValue;
+    }
     returnValue.text = cell.h || cell.w || ("" + cell.v);
     const type = cell.t;
     switch (type) {
