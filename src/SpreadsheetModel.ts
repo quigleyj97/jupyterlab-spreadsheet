@@ -31,6 +31,11 @@ export class SpreadsheetModel
         return this._sheetChanged;
     }
 
+    /** Return the currently selected sheet, or null if no sheet is selected */
+    public get activeSheet(): string | null {
+        return this._activeSheet;
+    }
+
     /**
      * Dispose all resources held by this model, including the worksheet model.
      * This will render the model unusable.
@@ -50,6 +55,19 @@ export class SpreadsheetModel
      */
     public setSheet(name: string) {
         this._activeSheet = name;
+        this._sheetChanged.emit(name);
+    }
+
+    /**
+     * Get the sheet names for the active workbook.
+     *
+     * If the workbook is null, this will return an empty array.
+     */
+    public getSheetNames(): string[] {
+        if (this._workbook == null) {
+            return [];
+        }
+        return this._workbook.SheetNames;
     }
 
     /**
