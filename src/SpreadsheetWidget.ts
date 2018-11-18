@@ -1,4 +1,4 @@
-import { Widget } from "@phosphor/widgets";
+import { Widget, PanelLayout, TabBar } from "@phosphor/widgets";
 import { SpreadsheetModelNS, SpreadsheetModel } from "./SpreadsheetModel";
 //#region SlickGrid ambient imports
 // Because SlickGrid isn't exactly WebPack friendly, comes as a global module, predates NPM, and
@@ -17,13 +17,22 @@ import "../style/GridStyle.css";
 import { SpreadsheetFormatter } from "./Formatter";
 
 export class SpreadsheetWidget extends Widget {
+    public readonly layout: PanelLayout;
     private readonly model: SpreadsheetModel;
+    private readonly tabBar: TabBar<void>;
     private columnConfig: SpreadsheetModelNS.ColumnList | undefined;
     private grid: Slick.Grid<SpreadsheetModelNS.SpreadsheetData> | undefined;
 
     constructor({model}: SpreadsheetWidgetNS.IOptions) {
         super();
         this.model = model;
+        this.layout = new PanelLayout();
+        this.tabBar = new TabBar({
+            allowDeselect: false, // there must always be a selected sheet
+            tabsMovable: false
+        });
+        this.layout.addWidget(this.tabBar);
+        this.tabBar.currentChanged.connect(this.handleSheetChanged, this);
         this.model.workbookChanged.connect(this.handleModelContentChanged, this);
         this.render();
     }
@@ -35,6 +44,7 @@ export class SpreadsheetWidget extends Widget {
         if (this.grid != null) {
             this.grid.destroy();
         }
+        this.tabBar.currentChanged.disconnect(this.handleSheetChanged, this);
         this.model.workbookChanged.disconnect(this.handleModelContentChanged, this);
         super.dispose();
     }
@@ -52,11 +62,29 @@ export class SpreadsheetWidget extends Widget {
         this.grid.resizeCanvas();
     }
 
+    private handleSheetChanged(_sender: TabBar<void>,
+                               {currentTitle}: TabBar.ICurrentChangedArgs<void>) {
+        if (this.grid == null || currentTitle == null) {
+            return;
+        }
+        this.model.setSheet(currentTitle.label);
+    }
+
     private handleModelContentChanged() {
         if (this.grid == null) {
             // how should we handle this case? when does it occur?
             return;
         }
+        // Set the sheet names in the tab bar
+        this.tabBar.clearTabs();
+        const sheetNames = this.model.getSheetNames();
+        for (const sheet of sheetNames) {
+            this.tabBar.addTab({
+                label: sheet,
+                owner: void 0
+            });
+        }
+        this.tabBar.currentIndex = sheetNames.indexOf(this.model.activeSheet || "");
         // TODO: Better handling of model changes
         // We do this because of a bug in SlickGrid#setColumns where the new columns have
         // incorrect widths. Obviously this isn't ideal, but works for now.
