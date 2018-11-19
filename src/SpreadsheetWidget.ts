@@ -1,6 +1,7 @@
 import { Widget, PanelLayout, TabBar, StackedLayout, BoxLayout } from "@phosphor/widgets";
 import { SpreadsheetModel } from "./SpreadsheetModel";
 import { GridWidget } from "./GridWidget";
+import "../style/WidgetStyle.css";
 
 export class SpreadsheetWidget extends Widget {
     public readonly layout: BoxLayout;
@@ -10,6 +11,7 @@ export class SpreadsheetWidget extends Widget {
 
     constructor({model}: SpreadsheetWidgetNS.IOptions) {
         super();
+        this.addClass(SpreadsheetWidgetNS.CSS_CLASS);
         this.model = model;
         this.layout = new BoxLayout({});
         this.grid = new GridWidget({model});
@@ -19,8 +21,7 @@ export class SpreadsheetWidget extends Widget {
         });
         this.layout.addWidget(this.grid);
         this.layout.addWidget(this.tabBar);
-        // BoxLayout.setStretch(this.tabBar, 0);
-        BoxLayout.setSizeBasis(this.tabBar, 50);
+        BoxLayout.setSizeBasis(this.tabBar, 26);
         BoxLayout.setStretch(this.grid, 1);
         this.tabBar.currentChanged.connect(this.handleSheetChanged, this);
         this.model.workbookChanged.connect(this.handleModelContentChanged, this);
@@ -59,6 +60,8 @@ export class SpreadsheetWidget extends Widget {
 }
 
 export namespace SpreadsheetWidgetNS {
+    export const CSS_CLASS = "sp-SpreadsheetWidget";
+
     export interface IOptions {
         model: SpreadsheetModel;
     }
