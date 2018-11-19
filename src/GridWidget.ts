@@ -2,9 +2,11 @@
 // Because SlickGrid isn't exactly WebPack friendly, comes as a global module, predates NPM, and
 // makes even the most elderly of frameworks feel young, we need to structure our imports
 // carefully. It comes with bundled verions of JQuery and JQuery UI, so we load those first.
-import "slickgrid/lib/jquery-1.8.3.js";
-import "slickgrid/lib/jquery.event.drag-2.2.js";
-import "slickgrid/lib/jquery-ui-1.9.2.js";
+// To get global symbols working, we need to use `expose-loader` to set the global symbol,
+// since we don't have control over the webpack config.
+import "expose-loader?jQuery!jquery";
+import "jquery-ui";
+import "slickgrid/lib/jquery.event.drag-2.3.0.js";
 // Now we load SlickGrid's library folders, in dependency order
 import "slickgrid/slick.core.js";
 import "slickgrid/slick.dataview.js";
@@ -37,7 +39,8 @@ export class GridWidget extends Widget {
             this._columnConfig,
             {
                 // Cast to any since the typings don't recognize "advanced" formatters
-                defaultFormatter: SpreadsheetFormatter as any
+                defaultFormatter: SpreadsheetFormatter as any,
+                enableColumnReorder: false,
             }
         );
         this._grid.getCanvasNode().classList.add("sp-Grid");
