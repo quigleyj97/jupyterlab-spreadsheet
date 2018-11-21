@@ -1,7 +1,7 @@
 //#region SlickGrid ambient imports
 // Because SlickGrid isn't exactly WebPack friendly, comes as a global module, predates NPM, and
 // makes even the most elderly of frameworks feel young, we need to structure our imports
-// carefully. It comes with bundled verions of JQuery and JQuery UI, so we load those first.
+// carefully. It depends on JQuery and JQuery UI, so we load those first.
 // To get global symbols working, we need to use `expose-loader` to set the global symbol,
 // since we don't have control over the webpack config.
 import "expose-loader?jQuery!jquery";
@@ -33,17 +33,7 @@ export class GridWidget extends Widget {
         model.sheetChanged.connect(this.update, this);
         model.workbookChanged.connect(this.update, this);
         this._columnConfig = model.getColumnConfig();
-        this._grid = new Slick.Grid(
-            this.node,
-            this._model,
-            this._columnConfig,
-            {
-                // Cast to any since the typings don't recognize "advanced" formatters
-                defaultFormatter: SpreadsheetFormatter as any,
-                enableColumnReorder: false,
-            }
-        );
-        this._grid.getCanvasNode().classList.add("sp-Grid");
+        this._grid = this.buildGrid();
     }
 
     public dispose() {
@@ -56,9 +46,9 @@ export class GridWidget extends Widget {
     }
 
     protected onUpdateRequest() {
-        const columns = this._model.getColumnConfig();
-        this._grid.setColumns(columns);
-        this._grid.render();
+        this._columnConfig = this._model.getColumnConfig();
+        this._grid.destroy();
+        this._grid = this.buildGrid();
     }
 
     // TODO: The SlickGrid will might need to be reconstructed after a detatch/attach,
@@ -72,6 +62,23 @@ export class GridWidget extends Widget {
     protected onResize() {
         if (this._grid == null) return;
         this._grid.resizeCanvas();
+    }
+
+    // Force a rebuild of the grid to side-step column initialization issues in
+    // SlickGrid
+    private buildGrid() {
+        const grid = new Slick.Grid(
+            this.node,
+            this._model,
+            this._columnConfig,
+            {
+                // Cast to any since the typings don't recognize "advanced" formatters
+                defaultFormatter: SpreadsheetFormatter as any,
+                enableColumnReorder: false,
+            }
+        );
+        grid.getCanvasNode().classList.add("sp-Grid");
+        return grid;
     }
 }
 
