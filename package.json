@@ -6,6 +6,9 @@
   "jupyterlab": {
     "extension": true
   },
+  "scripts": {
+    "build": "tsc"
+  },
   "keywords": [
     "jupyterlab-extension",
     "spreadsheet",
