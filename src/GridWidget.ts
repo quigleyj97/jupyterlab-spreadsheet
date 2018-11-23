@@ -29,6 +29,7 @@ export class GridWidget extends Widget {
 
     constructor({model}: GridWidget.IOptions) {
         super();
+        this.addClass("sp-Grid");
         this._model = model;
         model.sheetChanged.connect(this.update, this);
         model.workbookChanged.connect(this.update, this);
@@ -77,7 +78,6 @@ export class GridWidget extends Widget {
                 enableColumnReorder: false,
             }
         );
-        grid.getCanvasNode().classList.add("sp-Grid");
         return grid;
     }
 }

@@ -1,6 +1,6 @@
 .sp-SpreadsheetWidget > .p-TabBar {
     height: 26px;
-    background-color: var(--jp-layout-color3);
+    background-color: var(--jp-border-color1);
     padding-left: 10px;
 }
 
@@ -10,6 +10,7 @@
     border: 1px solid var(--jp-border-color1);
     border-left: 0px;
     border-bottom: 0px;
+    color: var(--jp-ui-font-color0);
 }
 
 .sp-SpreadsheetWidget > .p-TabBar .p-TabBar-tab.p-mod-current {
