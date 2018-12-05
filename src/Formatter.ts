@@ -1,5 +1,5 @@
 import { CellObject } from "xlsx/types";
-import { SpreadsheetModelNS, SpreadsheetModel } from "./SpreadsheetModel";
+import { SpreadsheetModel } from "./SpreadsheetModel";
 
 /**
  * Grid formatter
@@ -36,9 +36,9 @@ import { SpreadsheetModelNS, SpreadsheetModel } from "./SpreadsheetModel";
 export function SpreadsheetFormatter(index: number,
                                      column: number,
                                      value: unknown,
-                                     columnCfg: Slick.Column<SpreadsheetModelNS.SpreadsheetData>,
-                                     rowObject: SpreadsheetModelNS.SpreadsheetData,
-                                     grid: Slick.Grid<SpreadsheetModelNS.SpreadsheetData>) {
+                                     columnCfg: Slick.Column<SpreadsheetModel.SpreadsheetData>,
+                                     rowObject: SpreadsheetModel.SpreadsheetData,
+                                     grid: Slick.Grid<SpreadsheetModel.SpreadsheetData>) {
     const cell = value as CellObject | null;
     const returnValue = {
         text: "",

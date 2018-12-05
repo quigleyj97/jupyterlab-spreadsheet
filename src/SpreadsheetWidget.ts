@@ -1,4 +1,4 @@
-import { Widget, PanelLayout, TabBar, StackedLayout, BoxLayout } from "@phosphor/widgets";
+import { Widget, TabBar, BoxLayout } from "@phosphor/widgets";
 import { SpreadsheetModel } from "./SpreadsheetModel";
 import { GridWidget } from "./GridWidget";
 import "../style/WidgetStyle.css";
@@ -9,9 +9,9 @@ export class SpreadsheetWidget extends Widget {
     private readonly tabBar: TabBar<void>;
     private readonly grid: GridWidget;
 
-    constructor({model}: SpreadsheetWidgetNS.IOptions) {
+    constructor({model}: SpreadsheetWidget.IOptions) {
         super();
-        this.addClass(SpreadsheetWidgetNS.CSS_CLASS);
+        this.addClass(SpreadsheetWidget.CSS_CLASS);
         this.model = model;
         this.layout = new BoxLayout({});
         this.grid = new GridWidget({model});
@@ -59,7 +59,7 @@ export class SpreadsheetWidget extends Widget {
     }
 }
 
-export namespace SpreadsheetWidgetNS {
+export namespace SpreadsheetWidget {
     export const CSS_CLASS = "sp-SpreadsheetWidget";
 
     export interface IOptions {

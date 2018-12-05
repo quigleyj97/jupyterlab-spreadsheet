@@ -5,13 +5,13 @@ import { Signal, ISignal } from "@phosphor/signaling";
 
 export class SpreadsheetModel
             extends DocumentModel
-            implements Slick.DataProvider<SpreadsheetModelNS.SpreadsheetData> {
+            implements Slick.DataProvider<SpreadsheetModel.SpreadsheetData> {
     private _workbook: WorkBook | undefined;
     private _workbookChanged = new Signal<this, void>(this);
     private _sheetChanged = new Signal<this, string>(this);
     private _activeSheet: string | null = null;
 
-    constructor({modelDB}: SpreadsheetModelNS.IOptions) {
+    constructor({modelDB}: SpreadsheetModel.IOptions) {
         // don't create a kernel
         super(void 0, modelDB);
         this.value.changed.connect(this.handleContentChanged, this);
@@ -98,10 +98,10 @@ export class SpreadsheetModel
     /**
      * Returns the SlickGrid model for a single row
      */
-    public getItem(r: number): SpreadsheetModelNS.SpreadsheetData {
-        const rowModel: SpreadsheetModelNS.SpreadsheetData = {id: r};
+    public getItem(r: number): SpreadsheetModel.SpreadsheetData {
+        const rowModel: SpreadsheetModel.SpreadsheetData = {id: r};
         if (this._workbook == null || this._activeSheet == null) {
-            return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
+            return Object.freeze(rowModel as SpreadsheetModel.SpreadsheetData);
         }
         const sheetData = this._workbook.Sheets[this._activeSheet];
         const range = this.getExtent();
@@ -115,11 +115,11 @@ export class SpreadsheetModel
             }
             rowModel["c" + c] = data;
         }
-        return Object.freeze(rowModel as SpreadsheetModelNS.SpreadsheetData);
+        return Object.freeze(rowModel as SpreadsheetModel.SpreadsheetData);
     }
 
-    public getItemMetadata(index: number): SpreadsheetModelNS.SpreadsheetMetadata {
-        const metadata: SpreadsheetModelNS.SpreadsheetMetadata = {
+    public getItemMetadata(index: number): SpreadsheetModel.SpreadsheetMetadata {
+        const metadata: SpreadsheetModel.SpreadsheetMetadata = {
             columns: {}
         };
         if (this._workbook == null || this._activeSheet == null) {
@@ -149,13 +149,13 @@ export class SpreadsheetModel
      * Returns a SlickGrid column config, respecting formatting options in the sheet
      * @param sheetData The worksheet to generate the columns from
      */
-    public getColumnConfig(): SpreadsheetModelNS.ColumnList {
+    public getColumnConfig(): SpreadsheetModel.ColumnList {
         if (this._workbook == null || this._activeSheet == null) {
             return [];
         }
         const sheetData = this._workbook.Sheets[this._activeSheet];
         const range = this.getExtent();
-        const config: SpreadsheetModelNS.ColumnList = [
+        const config: SpreadsheetModel.ColumnList = [
             {
                 // row number
                 id: "row",
@@ -186,7 +186,7 @@ export class SpreadsheetModel
     }
 }
 
-export namespace SpreadsheetModelNS {
+export namespace SpreadsheetModel {
     export interface IOptions {
         /** ModelDB to be passed to the DocumentModel */
         modelDB?: ModelDB;

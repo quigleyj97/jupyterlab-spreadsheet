@@ -15,7 +15,7 @@ import "slickgrid/slick.grid.js";
 import "slickgrid/slick.grid.css";
 //#endregion
 import { Widget } from "@phosphor/widgets";
-import { SpreadsheetModel, SpreadsheetModelNS } from "./SpreadsheetModel";
+import { SpreadsheetModel } from "./SpreadsheetModel";
 import { SpreadsheetFormatter } from "./Formatter";
 import "../style/GridStyle.css";
 
@@ -23,9 +23,9 @@ import "../style/GridStyle.css";
  * This wrapper handles things like updating on resize.
  */
 export class GridWidget extends Widget {
-    private _grid: Slick.Grid<SpreadsheetModelNS.SpreadsheetData>;
+    private _grid: Slick.Grid<SpreadsheetModel.SpreadsheetData>;
     private _model: SpreadsheetModel;
-    private _columnConfig: SpreadsheetModelNS.ColumnList;
+    private _columnConfig: SpreadsheetModel.ColumnList;
 
     constructor({model}: GridWidget.IOptions) {
         super();
