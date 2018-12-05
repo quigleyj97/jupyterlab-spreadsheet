@@ -1,5 +1,5 @@
 import { CellObject } from "xlsx/types";
-import { SpreadsheetModel } from "./SpreadsheetModel";
+import { SpreadsheetModel } from "./model";
 
 /**
  * Grid formatter

@@ -1,11 +1,11 @@
 import { JupyterLabPlugin, JupyterLab, ILayoutRestorer } from "@jupyterlab/application";
-import { SpreadsheetWidgetFactory } from "./SpreadsheetWidgetFactory";
-import { SpreadsheetModelFactory } from "./SpreadsheetModelFactory";
+import { SpreadsheetWidgetFactory } from "./widgetfactory";
+import { SpreadsheetModelFactory } from "./modelfactory";
 import { Token } from "@phosphor/coreutils";
 import { InstanceTracker, IInstanceTracker } from "@jupyterlab/apputils";
-import { SpreadsheetWidget } from "./SpreadsheetWidget";
+import { SpreadsheetWidget } from "./widget";
 import { IDocumentWidget } from "@jupyterlab/docregistry";
-import { SpreadsheetModel } from "./SpreadsheetModel";
+import { SpreadsheetModel } from "./model";
 
 const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
 type ISpreadsheetTracker = IInstanceTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>;

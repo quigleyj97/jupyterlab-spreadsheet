@@ -15,8 +15,8 @@ import "slickgrid/slick.grid.js";
 import "slickgrid/slick.grid.css";
 //#endregion
 import { Widget } from "@phosphor/widgets";
-import { SpreadsheetModel } from "./SpreadsheetModel";
-import { SpreadsheetFormatter } from "./Formatter";
+import { SpreadsheetModel } from "./model";
+import { SpreadsheetFormatter } from "./formatter";
 import "../style/GridStyle.css";
 
 /** A convenience wrapper around a SlickGrid component.

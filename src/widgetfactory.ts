@@ -4,8 +4,8 @@ import {
     DocumentRegistry,
     DocumentWidget
 } from "@jupyterlab/docregistry";
-import { SpreadsheetModel } from "./SpreadsheetModel";
-import { SpreadsheetWidget } from "./SpreadsheetWidget";
+import { SpreadsheetModel } from "./model";
+import { SpreadsheetWidget } from "./widget";
 
 export class SpreadsheetWidgetFactory extends ABCWidgetFactory<
                 IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>,

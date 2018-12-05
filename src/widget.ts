@@ -1,6 +1,6 @@
 import { Widget, TabBar, BoxLayout } from "@phosphor/widgets";
-import { SpreadsheetModel } from "./SpreadsheetModel";
-import { GridWidget } from "./GridWidget";
+import { SpreadsheetModel } from "./model";
+import { GridWidget } from "./grid";
 import "../style/WidgetStyle.css";
 
 export class SpreadsheetWidget extends Widget {
