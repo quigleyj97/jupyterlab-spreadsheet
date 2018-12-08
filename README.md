@@ -12,6 +12,8 @@ This plugin adds a simple spreadsheet viewer to JupyterLab.
 basic formatting. The plugin is in alpha, and doesn't support all features of
 workbooks (advanced formatting, cell merges, formulas, etc.).
 
+Refer to the [changelog](./Changelog.md) for detailed release notes.
+
 ## Getting Started
 
 Installing `jupyterlab-spreadsheet` is easy. Just run the following command:
