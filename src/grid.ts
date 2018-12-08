@@ -17,7 +17,7 @@ import "slickgrid/slick.grid.css";
 import { Widget } from "@phosphor/widgets";
 import { SpreadsheetModel } from "./model";
 import { SpreadsheetFormatter } from "./formatter";
-import "../style/GridStyle.css";
+import "../style/grid.css";
 
 /** A convenience wrapper around a SlickGrid component.
  * This wrapper handles things like updating on resize.
