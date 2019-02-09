@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/jupyterlab-spreadsheet.svg?style=flat-square)](https://www.npmjs.com/package/jupyterlab-spreadsheet)
 [![GitHub](https://img.shields.io/github/license/quigleyj97/jupyterlab-spreadsheet.svg?style=flat-square)](https://github.com/quigleyj97/jupyterlab-spreadsheet/blob/master/LICENSE.md)
-![Supported JLab version](https://img.shields.io/badge/JupyterLab-0.35-green.svg?style=flat-square)
+![Supported JLab version](https://img.shields.io/badge/JupyterLab-1.0.0-alpha0-green.svg?style=flat-square)
 
 ![Image depicting the plugin displaying a simple XLS workbook](./screenshot.png)
 

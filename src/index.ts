@@ -1,4 +1,4 @@
-import { JupyterLabPlugin, JupyterLab, ILayoutRestorer } from "@jupyterlab/application";
+import { ILayoutRestorer, JupyterFrontEnd, JupyterFrontEndPlugin } from "@jupyterlab/application";
 import { SpreadsheetWidgetFactory } from "./widgetfactory";
 import { SpreadsheetModelFactory } from "./modelfactory";
 import { Token } from "@phosphor/coreutils";
@@ -10,7 +10,7 @@ import { SpreadsheetModel } from "./model";
 const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
 type ISpreadsheetTracker = IInstanceTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>;
 
-function activateSpreadsheet(app: JupyterLab,
+function activateSpreadsheet(app: JupyterFrontEnd,
                              restorer: ILayoutRestorer): ISpreadsheetTracker {
     const tracker = new InstanceTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>({
         namespace: "jupyterlab-spreadsheet"
@@ -57,7 +57,7 @@ function activateSpreadsheet(app: JupyterLab,
     return tracker;
 }
 
-const plugin: JupyterLabPlugin<ISpreadsheetTracker> = {
+const plugin: JupyterFrontEndPlugin<ISpreadsheetTracker> = {
     id: "jupyter-spreadsheet",
     autoStart: true,
     requires: [ILayoutRestorer],
