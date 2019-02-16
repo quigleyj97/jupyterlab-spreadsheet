@@ -30,7 +30,7 @@ steps:
   displayName: 'Install Node.js'
 - script: python -m pip install --upgrade jupyterlab
   displayName: 'Install JupyterLab'
-- script: |
+- bash: |
     yarn --frozen-lockfile
     yarn run build
   displayName: 'Build the extension'
