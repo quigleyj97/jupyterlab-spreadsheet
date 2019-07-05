@@ -1,5 +1,18 @@
 # Changelog
 
+## `0.1.0`
+
+ - Chore: JupyterLab 1.0 compatibility
+
+This release includes no functional changes. Minor version was bumped to prevent
+existing installs from fetching an incompatible version before a JupyterLab
+upgrade.
+
+## `0.0.5`
+
+0.0.4 was incorrectly released, causing issues for end users on *nix platforms.
+This release corrected that.
+
 ## `0.0.4`
 
  - Add: Sheet Picker

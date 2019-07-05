@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab-spreadsheet",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Adds a spreadsheet viewer to JupyterLab",
   "main": "lib/index.js",
   "jupyterlab": {
