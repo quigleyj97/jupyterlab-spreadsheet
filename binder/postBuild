@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -ex
+
+jupyter labextension install jupyterlab-spreadsheet --no-build
+
+jupyter lab build
+
+jupyter lab workspaces import binder/workspace.json
