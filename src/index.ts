@@ -7,8 +7,8 @@ import { SpreadsheetModelFactory } from "./modelfactory";
 import { SpreadsheetWidget } from "./widget";
 import { SpreadsheetWidgetFactory } from "./widgetfactory";
 
-const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
-type ISpreadsheetTracker = IWidgetTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>;
+export const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
+export type ISpreadsheetTracker = IWidgetTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>;
 
 function activateSpreadsheet(app: JupyterFrontEnd,
                              restorer: ILayoutRestorer): ISpreadsheetTracker {
