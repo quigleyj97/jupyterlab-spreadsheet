@@ -1,5 +1,12 @@
 # Changelog
 
+## `0.2.0`
+
+ - Add: JupyterLab 1.1 compatibility
+
+This release includes no functional changes. The minor version was bumped to
+prevent 1.0 installs from picking this up erroneously.
+
 ## `0.1.0`
 
  - Chore: JupyterLab 1.0 compatibility
