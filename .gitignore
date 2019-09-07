@@ -1,5 +1,5 @@
-/lib
-/node_modules
+lib/
+node_modules/
 yarn-error.log
 # Jupyter
-.ipynb_checkpoints
+.ipynb_checkpoints/
