@@ -1,4 +1,4 @@
-import { read, WorkBook, WorkSheet, utils } from "xlsx";
+import { read, WorkBook, utils } from "xlsx";
 import { DocumentModel } from "@jupyterlab/docregistry";
 import { ModelDB } from "@jupyterlab/observables";
 import { Signal, ISignal } from "@phosphor/signaling";
@@ -101,13 +101,13 @@ export class SpreadsheetModel
     public getItem(r: number): SpreadsheetModel.SpreadsheetData {
         const rowModel: SpreadsheetModel.SpreadsheetData = {id: r};
         if (this._workbook == null || this._activeSheet == null) {
-            return Object.freeze(rowModel as SpreadsheetModel.SpreadsheetData);
+            return Object.freeze(rowModel);
         }
         const sheetData = this._workbook.Sheets[this._activeSheet];
         const range = this.getExtent();
         // `end.col - start.col`
-        const n_cols = range.e.c - range.s.c;
-        for (let c = 0; c <= n_cols; c++) {
+        const nCols = range.e.c - range.s.c;
+        for (let c = 0; c <= nCols; c++) {
             const cell = utils.encode_cell({r, c});
             let data: unknown = null;
             if (cell in sheetData) {
@@ -115,7 +115,7 @@ export class SpreadsheetModel
             }
             rowModel["c" + c] = data;
         }
-        return Object.freeze(rowModel as SpreadsheetModel.SpreadsheetData);
+        return Object.freeze(rowModel);
     }
 
     public getItemMetadata(index: number): SpreadsheetModel.SpreadsheetMetadata {
@@ -137,7 +137,8 @@ export class SpreadsheetModel
             }
             // whether the merge continues below this row
             const mergeDown = merge.e.r - merge.s.r > 0 && index < merge.e.r;
-            metadata.columns!["c" + merge.s.c] = {
+            // eslint-disable-next-line
+            metadata.columns!["c" + merge.s.c] = { 
                 colspan: merge.e.c - merge.s.c + 1, //end inclusive
                 mergeDown
             };
@@ -168,11 +169,12 @@ export class SpreadsheetModel
         ];
         for (let i = range.s.c; i <= range.e.c; i++) {
             const colName = utils.encode_col(i);
+            const colWidth = (sheetData["!cols"]) ? sheetData["!cols"][i].width : void 0;
             config.push({
                 id: "c" + i,
                 name: colName,
                 field: "c" + i,
-                width: (sheetData["!cols"] || {} as any)[colName],
+                width: colWidth,
                 headerCssClass: "sp-GridHeader"
             });
         }

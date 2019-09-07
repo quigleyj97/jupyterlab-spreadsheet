@@ -46,9 +46,10 @@ export function SpreadsheetFormatter(index: number,
         removeClasses: "sp-Cell-Number sp-Cell-Error sp-Cell-MergeDown"
     };
     const metadata = (grid.getData() as SpreadsheetModel).getItemMetadata(index);
-    if (metadata.columns && columnCfg.id! in metadata.columns) {
+    const colId = columnCfg.id;
+    if (colId && metadata.columns && colId in metadata.columns) {
         // check mergeDown
-        if (metadata.columns[columnCfg.id!].mergeDown) {
+        if (metadata.columns[colId].mergeDown) {
             returnValue.addClasses += "sp-Cell-MergeDown ";
         }
     }

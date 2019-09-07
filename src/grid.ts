@@ -74,7 +74,7 @@ export class GridWidget extends Widget {
             this._columnConfig,
             {
                 // Cast to any since the typings don't recognize "advanced" formatters
-                defaultFormatter: SpreadsheetFormatter as any,
+                defaultFormatter: SpreadsheetFormatter as any, //eslint-disable-line
                 enableColumnReorder: false,
             }
         );

@@ -34,5 +34,8 @@ steps:
     yarn --frozen-lockfile
     yarn run build
   displayName: 'Build the extension'
+- bash: |
+    yarn lint
+  displayName: 'Lint the extension'
 - bash: jupyter labextension install .
   displayName: 'Install the extension and verify it builds'
