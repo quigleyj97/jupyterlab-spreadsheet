@@ -7,8 +7,8 @@ import { SpreadsheetModel } from "./model";
 import { SpreadsheetModelFactory } from "./modelfactory";
 import { SpreadsheetWidget } from "./widget";
 import { SpreadsheetWidgetFactory } from "./widgetfactory";
-import { createConverter, DataTypeNoArgs, resolveExtensionConverter } from "@jupyterlab/dataregistry";
-import { BoxLayout, Widget } from "@phosphor/widgets";
+import { createConverter, resolveExtensionConverter, fileDataType } from "@jupyterlab/dataregistry";
+import { Widget } from "@phosphor/widgets";
 
 export const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
 export type ISpreadsheetTracker = IWidgetTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>;
@@ -53,34 +53,40 @@ function activateSpreadsheet(
     });
     
     if (registry) {
-        const XLSDatatype = new DataTypeNoArgs("application/vnd.ms-excel");
-        const XLSXDataType = new DataTypeNoArgs("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        
-        registry.addConverter(
-            createConverter({
-                from: XLSDatatype,
-                to: widgetDataType
-            }, () => {
-                return {
-                    type: "Spreadsheet",
-                    data: () => (new Widget())
-                }
-            }),
-            createConverter({
-                    from: XLSXDataType,
-                    to: widgetDataType
-            }, () => {
-                return {
-                    type: "Spreadsheet",
-                    data: () => (new Widget())
-                }
-            })
-        );
+        const XLS_MIMETYPE = "application/vnd.ms-excel";
+        const XLSX_MIMETYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        // const SheetJsDataType = new DataTypeNoArgs("application/vnd.sheetjs.cwf+json");
 
         registry.addConverter(
-            resolveExtensionConverter(".xls", "application/vnd.ms-excel"),
-            resolveExtensionConverter(".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            resolveExtensionConverter(".xls", XLS_MIMETYPE),
+            resolveExtensionConverter(".xlsx", XLSX_MIMETYPE),
+            createConverter({
+                from: fileDataType,
+                to: widgetDataType,
+            }, ({type}) => {
+                if (!(type === XLS_MIMETYPE || type === XLSX_MIMETYPE)) {
+                    return null;
+                }
+                return {
+                    type: "Spreadsheet",
+                    data: () => new Widget()
+                }
+            })
         )
+        
+        // registry.addConverter(
+        //     createConverter({
+        //         from: XLSDatatype,
+        //         to: CSVDataType
+        //     }, () => {
+        //         return {
+        //             type: void 0,
+        //             data: new Observable<string>(s => {
+        //                 s.next("a,b\nThis,is\nA,Test");
+        //             })
+        //         };
+        //     }),
+        // );
     }
 
     factory.widgetCreated.connect((sender, widget) => {
