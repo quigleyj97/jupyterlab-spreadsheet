@@ -13,8 +13,10 @@ export class SpreadsheetModel
     private _activeSheet: string | null = null;
     private _subscription: Subscription; 
     private _isDisposed = false;
+    private _value: Observable<string>;
 
     constructor({value}: SpreadsheetModel.IOptions) {
+        this._value = value;
         this._subscription = value.subscribe(this.handleContentChanged.bind(this));
     }
 
@@ -186,6 +188,20 @@ export class SpreadsheetModel
             });
         }
         return config;
+    }
+
+    /**
+     * Convert the active sheet to a CSV and return it.
+     */
+    public toCsv(sheetName?: string) {
+        const sheetToConv = sheetName || this._activeSheet;
+        if (this._workbook == null || sheetToConv == null) {
+            return null; // no conversion possible
+        }
+        const sheet = this._workbook.Sheets[sheetToConv];
+        return utils.sheet_to_csv(sheet, {
+            FS: ","
+        });
     }
 
     private handleContentChanged(content: string) {
