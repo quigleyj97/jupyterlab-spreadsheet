@@ -1,25 +1,28 @@
 import { read, WorkBook, utils } from "xlsx";
-import { DocumentModel } from "@jupyterlab/docregistry";
-import { ModelDB } from "@jupyterlab/observables";
-import { Signal, ISignal } from "@phosphor/signaling";
+import { Observable, Subscription, Subject } from "rxjs";
+import { IDisposable } from "@phosphor/disposable";
 
 export class SpreadsheetModel
-            extends DocumentModel
-            implements Slick.DataProvider<SpreadsheetModel.SpreadsheetData> {
+    implements
+        Slick.DataProvider<SpreadsheetModel.SpreadsheetData>,
+        IDisposable
+{
     private _workbook: WorkBook | undefined;
-    private _workbookChanged = new Signal<this, void>(this);
-    private _sheetChanged = new Signal<this, string>(this);
+    private _workbookChanged = new Subject<void>();
+    private _sheetChanged = new Subject<string>();
     private _activeSheet: string | null = null;
+    private _subscription: Subscription; 
+    private _isDisposed = false;
 
-    constructor({modelDB}: SpreadsheetModel.IOptions) {
-        // don't create a kernel
-        super(void 0, modelDB);
-        this.value.changed.connect(this.handleContentChanged, this);
-        // we don't support editing (yet)
-        this.readOnly = true;
+    constructor({value}: SpreadsheetModel.IOptions) {
+        this._subscription = value.subscribe(this.handleContentChanged.bind(this));
     }
 
-    public get workbookChanged(): ISignal<this, void> {
+    public get isDisposed() {
+        return this._isDisposed;
+    }
+
+    public get workbookChanged(): Observable<void> {
         return this._workbookChanged;
     }
 
@@ -27,7 +30,7 @@ export class SpreadsheetModel
      *
      * Changes of this nature often require a re-render of the slickgrid
      */
-    public get sheetChanged(): ISignal<this, string> {
+    public get sheetChanged(): Observable<string> {
         return this._sheetChanged;
     }
 
@@ -41,11 +44,15 @@ export class SpreadsheetModel
      * This will render the model unusable.
      */
     public dispose() {
-        if (this.isDisposed) {
+        if (this._isDisposed) {
             return;
         }
 
-        this.value.changed.disconnect(this.handleContentChanged, this);
+        this._sheetChanged.complete();
+        this._workbookChanged.complete();
+        this._subscription.unsubscribe();
+
+        // Make sure that the workbook isn't pinned in memory by this object
         delete this._workbook;
     }
 
@@ -55,7 +62,7 @@ export class SpreadsheetModel
      */
     public setSheet(name: string) {
         this._activeSheet = name;
-        this._sheetChanged.emit(name);
+        this._sheetChanged.next(name);
     }
 
     /**
@@ -181,17 +188,16 @@ export class SpreadsheetModel
         return config;
     }
 
-    private handleContentChanged() {
-        this._workbook = read(this.value.text);
+    private handleContentChanged(content: string) {
+        this._workbook = read(content);
         this._activeSheet = this._workbook.SheetNames[0];
-        this._workbookChanged.emit(void 0);
+        this._workbookChanged.next(void 0);
     }
 }
 
 export namespace SpreadsheetModel {
     export interface IOptions {
-        /** ModelDB to be passed to the DocumentModel */
-        modelDB?: ModelDB;
+        value: Observable<string>;
     }
 
     export interface SpreadsheetData extends Slick.SlickData {

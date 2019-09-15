@@ -3,22 +3,25 @@ import { IWidgetTracker, WidgetTracker } from "@jupyterlab/apputils";
 import { IRegistry, widgetDataType } from "@jupyterlab/dataregistry-extension";
 import { IDocumentWidget } from "@jupyterlab/docregistry";
 import { Token } from "@phosphor/coreutils";
-import { SpreadsheetModel } from "./model";
-import { SpreadsheetModelFactory } from "./modelfactory";
+import { SpreadsheetModelFactory, JupyterSpreadsheetModel } from "./modelfactory";
 import { SpreadsheetWidget } from "./widget";
 import { SpreadsheetWidgetFactory } from "./widgetfactory";
 import { createConverter, resolveExtensionConverter, fileDataType } from "@jupyterlab/dataregistry";
 import { Widget } from "@phosphor/widgets";
 
 export const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
-export type ISpreadsheetTracker = IWidgetTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>;
+export type ISpreadsheetTracker = IWidgetTracker<
+    IDocumentWidget<SpreadsheetWidget, JupyterSpreadsheetModel>
+>;
 
 function activateSpreadsheet(
     app: JupyterFrontEnd,
     restorer: ILayoutRestorer,
     registry?: IRegistry,
 ): ISpreadsheetTracker {
-    const tracker = new WidgetTracker<IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>>({
+    const tracker = new WidgetTracker<
+        IDocumentWidget<SpreadsheetWidget, JupyterSpreadsheetModel>
+    >({
         namespace: "jupyterlab-spreadsheet"
     });
     const factory = new SpreadsheetWidgetFactory({
