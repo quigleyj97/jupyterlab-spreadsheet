@@ -34,13 +34,13 @@
     "jquery": "^3.3.1",
     "jquery-ui": "^1.12.1",
     "slickgrid": "^2.3.21",
-    "xlsx": "^0.14.0"
+    "xlsx": "^0.15.0"
   },
   "devDependencies": {
-    "@types/slickgrid": "^2.1.26",
-    "@typescript-eslint/eslint-plugin": "^2.1.0",
-    "@typescript-eslint/parser": "^2.1.0",
-    "eslint": "^6.3.0",
-    "typescript": "^3.6.1"
+    "@types/slickgrid": "^2.1.27",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
+    "eslint": "^6.7.0",
+    "typescript": "^3.7.2"
   }
 }
