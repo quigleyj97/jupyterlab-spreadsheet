@@ -14,6 +14,7 @@ import {
     URLDataType,
     DataTypeNoArgs,
     resolveDataType,
+    URLTemplate,
 } from "@jupyterlab/dataregistry";
 import { SpreadsheetModel } from "./model";
 import { defer, BehaviorSubject, merge, Observable, throwError } from "rxjs";
@@ -160,18 +161,19 @@ function activateSpreadsheet(
                 from: resolveDataType,
                 to: SheetJsDataType,
             }, ({ url }) => {
-                // TODO: Refactor this when the Data Registry publishes a new
-                // version with UrlTemplates
-                const result = /\/sheet\/([^/]+)$/.exec(url.hash);
+                const template = new URLTemplate("/sheet/{sheetName}/", {
+                    "sheetName": URLTemplate.string
+                });
+                const result = template.parse(url.href);
                 if (            	
                     url.protocol !== "file:" ||	
-                    !(/\.xlsx?$/.test(url.pathname)) || 
+                    !(/\.xlsx?$/.test(url.pathname)) ||
                     result == null
                 ) {
                     return null;
                 }
 
-                const sheetName = result[1];
+                const sheetName = result.sheetName;
                 url.hash = "";
                 const data = SheetJsWorkbookDataType
                     .getDataset(registry.getURL("" + url));
