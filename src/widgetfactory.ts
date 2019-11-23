@@ -4,15 +4,15 @@ import {
     DocumentRegistry,
     DocumentWidget
 } from "@jupyterlab/docregistry";
-import { SpreadsheetModel } from "./model";
 import { SpreadsheetWidget } from "./widget";
+import { JupyterSpreadsheetModel } from "./modelfactory";
 
 export class SpreadsheetWidgetFactory extends ABCWidgetFactory<
-                IDocumentWidget<SpreadsheetWidget, SpreadsheetModel>,
-                SpreadsheetModel
+                IDocumentWidget<SpreadsheetWidget, JupyterSpreadsheetModel>,
+                JupyterSpreadsheetModel
             > {
-    protected createNewWidget(context: DocumentRegistry.IContext<SpreadsheetModel>) {
-        const model = context.model;
+    protected createNewWidget(context: DocumentRegistry.IContext<JupyterSpreadsheetModel>) {
+        const model = context.model.model;
         const content = new SpreadsheetWidget({model});
         const widget = new DocumentWidget({content, context});
         return widget;

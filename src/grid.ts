@@ -15,6 +15,7 @@ import "slickgrid/slick.grid.js";
 import "slickgrid/slick.grid.css";
 //#endregion
 import { Widget } from "@phosphor/widgets";
+import { Subscription, merge } from "rxjs";
 import { SpreadsheetModel } from "./model";
 import { SpreadsheetFormatter } from "./formatter";
 import "../style/grid.css";
@@ -26,13 +27,18 @@ export class GridWidget extends Widget {
     private _grid: Slick.Grid<SpreadsheetModel.SpreadsheetData>;
     private _model: SpreadsheetModel;
     private _columnConfig: SpreadsheetModel.ColumnList;
+    private _subscription: Subscription;
 
     constructor({model}: GridWidget.IOptions) {
         super();
         this.addClass("sp-Grid");
         this._model = model;
-        model.sheetChanged.connect(this.update, this);
-        model.workbookChanged.connect(this.update, this);
+
+        this._subscription = merge(
+            model.sheetChanged,
+            model.workbookChanged
+        ).subscribe(() => this.update());
+
         this._columnConfig = model.getColumnConfig();
         this._grid = this.buildGrid();
     }
@@ -41,8 +47,7 @@ export class GridWidget extends Widget {
         if (this.isDisposed) {
             return;
         }
-        this._model.sheetChanged.disconnect(this.update, this);
-        this._model.workbookChanged.disconnect(this.update, this);
+        this._subscription.unsubscribe();
         this._grid.destroy();
     }
 

@@ -2,12 +2,14 @@ import { Widget, TabBar, BoxLayout } from "@phosphor/widgets";
 import { SpreadsheetModel } from "./model";
 import { GridWidget } from "./grid";
 import "../style/widget.css";
+import { Subscription } from "rxjs";
 
 export class SpreadsheetWidget extends Widget {
     public readonly layout: BoxLayout;
     private readonly model: SpreadsheetModel;
     private readonly tabBar: TabBar<void>;
     private readonly grid: GridWidget;
+    private readonly _subscription: Subscription;
 
     constructor({model}: SpreadsheetWidget.IOptions) {
         super();
@@ -24,7 +26,9 @@ export class SpreadsheetWidget extends Widget {
         BoxLayout.setSizeBasis(this.tabBar, 26);
         BoxLayout.setStretch(this.grid, 1);
         this.tabBar.currentChanged.connect(this.handleSheetChanged, this);
-        this.model.workbookChanged.connect(this.handleModelContentChanged, this);
+        this._subscription = this.model
+            .workbookChanged
+            .subscribe(() => this.handleModelContentChanged());
     }
 
     public dispose() {
@@ -33,7 +37,7 @@ export class SpreadsheetWidget extends Widget {
         }
         this.grid.dispose();
         this.tabBar.dispose();
-        this.model.workbookChanged.disconnect(this.handleModelContentChanged, this);
+        this._subscription.unsubscribe();
         super.dispose();
     }
 
