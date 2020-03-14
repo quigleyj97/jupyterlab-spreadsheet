@@ -24,23 +24,23 @@
   "license": "BSD-3-Clause",
   "private": false,
   "dependencies": {
-    "@jupyterlab/application": "^1.0.0",
-    "@jupyterlab/apputils": "^1.0.0",
+    "@jupyterlab/application": "^2.0.2",
+    "@jupyterlab/apputils": "^2.0.2",
     "@jupyterlab/dataregistry": "^3.0.0",
     "@jupyterlab/dataregistry-extension": "^3.0.0",
-    "@jupyterlab/docregistry": "^1.0.0",
+    "@jupyterlab/docregistry": "^2.0.2",
     "@phosphor/widgets": "^1.8.0",
     "expose-loader": "^0.7.5",
     "jquery": "^3.3.1",
     "jquery-ui": "^1.12.1",
     "slickgrid": "^2.3.21",
-    "xlsx": "^0.15.0"
+    "xlsx": "^0.15.5"
   },
   "devDependencies": {
     "@types/slickgrid": "^2.1.27",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
     "eslint": "^6.7.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.8.0"
   }
 }
