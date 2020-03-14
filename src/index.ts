@@ -1,12 +1,12 @@
 import { JupyterFrontEndPlugin, JupyterFrontEnd, ILayoutRestorer } from "@jupyterlab/application";
 import { IWidgetTracker, WidgetTracker } from "@jupyterlab/apputils";
-import { IRegistry } from "@jupyterlab/dataregistry-extension";
+// import { IRegistry } from "@jupyterlab/dataregistry-extension";
 import { IDocumentWidget } from "@jupyterlab/docregistry";
-import { Token } from "@phosphor/coreutils";
+import { Token } from "@lumino/coreutils";
 import { SpreadsheetModelFactory, JupyterSpreadsheetModel } from "./modelfactory";
 import { SpreadsheetWidget } from "./widget";
 import { SpreadsheetWidgetFactory } from "./widgetfactory";
-import { registerConverters, XLSX_MIMETYPE, XLS_MIMETYPE } from "./registry";
+import { /* registerConverters, */ XLSX_MIMETYPE, XLS_MIMETYPE } from "./registry";
 
 export const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
 export type ISpreadsheetTracker = IWidgetTracker<
@@ -16,7 +16,7 @@ export type ISpreadsheetTracker = IWidgetTracker<
 function activateSpreadsheet(
     app: JupyterFrontEnd,
     restorer: ILayoutRestorer,
-    registry?: IRegistry,
+    // registry?: IRegistry,
 ): ISpreadsheetTracker {
     const { docRegistry } = app;
     const tracker = new WidgetTracker<
@@ -55,9 +55,9 @@ function activateSpreadsheet(
         ]
     });
     
-    if (registry) {
-        registerConverters(registry)
-    }
+    // if (registry) {
+    //     registerConverters(registry)
+    // }
 
     factory.widgetCreated.connect((sender, widget) => {
         tracker.add(widget);
@@ -77,7 +77,7 @@ const plugin: JupyterFrontEndPlugin<ISpreadsheetTracker> = {
     id: "jupyter-spreadsheet",
     autoStart: true,
     requires: [ILayoutRestorer],
-    optional: [IRegistry],
+    // optional: [IRegistry],
     provides: ISpreadsheetTracker,
     activate: activateSpreadsheet
 };
