@@ -3,4 +3,4 @@ channels:
 - conda-forge
 dependencies:
 # Jupyter
-- jupyterlab=1.1
+- jupyterlab=2.0
