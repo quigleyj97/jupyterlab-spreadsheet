@@ -1,6 +1,6 @@
 import { read, WorkBook, utils } from "xlsx";
 import { Observable, Subscription, Subject } from "rxjs";
-import { IDisposable } from "@phosphor/disposable";
+import { IDisposable } from "@lumino/disposable";
 
 export class SpreadsheetModel
     implements

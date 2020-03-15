@@ -1,4 +1,4 @@
-import { Widget, TabBar, BoxLayout } from "@phosphor/widgets";
+import { Widget, TabBar, BoxLayout } from "@lumino/widgets";
 import { SpreadsheetModel } from "./model";
 import { GridWidget } from "./grid";
 import "../style/widget.css";

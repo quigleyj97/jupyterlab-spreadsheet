@@ -14,7 +14,7 @@ import "slickgrid/slick.grid.js";
 // Finally, the built-in stylesheet to make it work
 import "slickgrid/slick.grid.css";
 //#endregion
-import { Widget } from "@phosphor/widgets";
+import { Widget } from "@lumino/widgets";
 import { Subscription, merge } from "rxjs";
 import { SpreadsheetModel } from "./model";
 import { SpreadsheetFormatter } from "./formatter";
