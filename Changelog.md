@@ -1,5 +1,10 @@
 # Changelog
 
+## `0.3.1`
+
+0.3.0 was incorrectly released due to an automation failure, this release fixes
+that. No changes were included.
+
 ## `0.3.0`
 
  - Add: JupyterLab 2.0 compatibility
