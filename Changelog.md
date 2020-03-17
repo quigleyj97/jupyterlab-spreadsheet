@@ -1,5 +1,14 @@
 # Changelog
 
+## `0.3.0`
+
+ - Add: JupyterLab 2.0 compatibility
+
+Functional changes were planned for this release, but retracted due to
+compatibility issues with JupyterLab 2.0 and will instead ship in a later
+release. Minor version bumped to prevent older installs from picking this
+version up.
+
 ## `0.2.0`
 
  - Add: JupyterLab 1.1 compatibility
