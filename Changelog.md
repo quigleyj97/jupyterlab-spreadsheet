@@ -1,5 +1,15 @@
 # Changelog
 
+## `0.3.2`
+
+ - Chore: Update dependency to resolve security issue
+
+GitHub released a security advisory for versions of jQuery less than 3.5.0.
+This update makes the plugin explicitly depend on 3.5.0, which includes a fix
+for that advisory.
+
+cf. https://github.com/advisories/GHSA-gxr4-xjj5-5px2
+
 ## `0.3.1`
 
 0.3.0 was incorrectly released due to an automation failure, this release fixes

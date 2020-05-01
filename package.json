@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab-spreadsheet",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Adds a spreadsheet viewer to JupyterLab",
   "main": "lib/index.js",
   "jupyterlab": {
@@ -31,7 +31,7 @@
     "@lumino/disposable": "^1.3.5",
     "@lumino/widgets": "^1.11.1",
     "expose-loader": "^0.7.5",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
     "slickgrid": "^2.3.21",
     "xlsx": "^0.15.5"
