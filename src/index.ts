@@ -6,7 +6,7 @@ import { Token } from "@lumino/coreutils";
 import { SpreadsheetModelFactory, JupyterSpreadsheetModel } from "./modelfactory";
 import { SpreadsheetWidget } from "./widget";
 import { SpreadsheetWidgetFactory } from "./widgetfactory";
-import { /* registerConverters, */ XLSX_MIMETYPE, XLS_MIMETYPE } from "./registry";
+import { /* registerConverters, */ XLSX_MIMETYPE, XLS_MIMETYPE, ODF_MIMETYPE } from "./registry";
 
 export const ISpreadsheetTracker = new Token("jupyterlab-spreadsheet:tracker");
 export type ISpreadsheetTracker = IWidgetTracker<
@@ -30,10 +30,12 @@ function activateSpreadsheet(
         fileTypes: [
             "excel",
             "csv",
-            "dsv"
+            "dsv",
+            "ods"
         ],
         defaultFor: [
             "excel",
+            "ods"
         ],
     });
     const modelFactory = new SpreadsheetModelFactory();
@@ -50,6 +52,19 @@ function activateSpreadsheet(
         mimeTypes: [
             XLS_MIMETYPE,
             XLSX_MIMETYPE,
+            "application/octet-stream",
+            "text/plain"
+        ]
+    });
+    docRegistry.addFileType({
+        name: "ods",
+        displayName: "OpenOffice/LibreOffice Workbook",
+        fileFormat: "base64",
+        extensions: [
+            ".ods"
+        ],
+        mimeTypes: [
+            ODF_MIMETYPE,
             "application/octet-stream",
             "text/plain"
         ]

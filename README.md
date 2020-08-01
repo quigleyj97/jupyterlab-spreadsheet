@@ -13,7 +13,7 @@ Try it out!
 
 This plugin adds a simple spreadsheet viewer to JupyterLab.
 
-`jupyterlab-spreadsheet` supports XLS, XLSX, and CSV files, and allows for
+`jupyterlab-spreadsheet` supports XLS, XLSX, ODS, and CSV files, and allows for
 basic formatting (such as cell merges). The plugin is in alpha, and doesn't
 support all features of workbooks (advanced formatting, formulas, etc.).
 
