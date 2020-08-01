@@ -35,6 +35,14 @@ export const XLSX_MIMETYPE =
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 /**
+ * Mimetype for OpenOffice and LibreOffice spreadsheets.
+ * 
+ * These files have the extension ".ods"
+ */
+export const ODF_MIMETYPE =
+  "application/vnd.oasis.opendocument.spreadsheet";
+
+/**
  * Mimetype for JSON-based Common Spreadsheet Format workbooks.
  *
  * No standard file extension exists for this format, it is merely a glorified
