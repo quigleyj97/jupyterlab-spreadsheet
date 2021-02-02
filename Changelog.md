@@ -1,5 +1,10 @@
 # Changelog
 
+## `0.4.0`
+
+ - Update for JupyterLab 3
+
+This fix was contributed by @NQuigley02
 ## `0.3.2`
 
  - Chore: Update dependency to resolve security issue
