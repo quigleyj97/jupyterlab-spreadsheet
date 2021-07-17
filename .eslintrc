@@ -15,5 +15,7 @@
         "@typescript-eslint/unbound-method": "off",
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/interface-name-prefix": "off",
+        "@typescript-eslint/restrict-plus-operands": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
     }
   }

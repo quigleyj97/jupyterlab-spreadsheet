@@ -75,12 +75,12 @@ function activateSpreadsheet(
     // }
 
     factory.widgetCreated.connect((sender, widget) => {
-        tracker.add(widget);
+        void tracker.add(widget);
         widget.context.pathChanged.connect(() => {
-            tracker.save(widget);
+            void tracker.save(widget);
         });
     });
-    restorer.restore(tracker, {
+    void restorer.restore(tracker, {
         command: "docmanager:open",
         args: widget => ({path: widget.context.path, factory: "Spreadsheet"}),
         name: widget => widget.context.path
