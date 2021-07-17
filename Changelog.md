@@ -1,5 +1,14 @@
 # Changelog
 
+## `0.4.1`
+
+ - Fix #35 'A' Column not shown when it is blank
+ - Fix #37 Unable to build Jupyter lab 3.0.14
+ - Update dependencies to resolve low-severity security advisories
+
+This release fixes some build issues encountered in newer versions of
+JupyterLab, as well as a bug that incorrectly displayed sheets that had empty
+leading rows and/or columns.
 ## `0.4.0`
 
  - Update for JupyterLab 3
