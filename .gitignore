@@ -3,3 +3,8 @@ node_modules/
 yarn-error.log
 # Jupyter
 .ipynb_checkpoints/
+
+# Misc
+.DS_Store
+# Excel's autosave format
+~$*
