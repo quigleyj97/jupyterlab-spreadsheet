@@ -80,7 +80,8 @@ export class SpreadsheetModel
     }
 
     /**
-     * Returns the extent of the current sheet, so that views can calculate columns and
+     * Returns the extent of the current sheet, from the top-left A1 column to
+     * the bottom-right-most cell, so that views can calculate columns and
      * row numbers.
      */
     public getExtent() {
@@ -92,7 +93,13 @@ export class SpreadsheetModel
         // cf. https://github.com/SheetJS/js-xlsx#sheet-objects, "Special Sheet Keys"
         // TODO: Low: Inspect sheet data to attempt to guess at the true size
         const range = sheetData["!ref"] || "A1:A1";
-        return utils.decode_range(range);
+        // This range is _not_ from the top-left cell! It's from the first
+        // cell _with_ data, so it can actually skip rows/columns. We can't
+        // allow this as it'll cause misaligned rendering.
+        const sheetRangeExclusive = utils.decode_range(range);
+        // force the start of the range to be the top-most cell, always
+        sheetRangeExclusive.s = {c: 0, r: 0};
+        return sheetRangeExclusive;
     }
 
     /**
