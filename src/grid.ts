@@ -4,7 +4,7 @@
 // carefully. It depends on JQuery and JQuery UI, so we load those first.
 // To get global symbols working, we need to use `expose-loader` to set the global symbol,
 // since we don't have control over the webpack config.
-import "expose-loader?jQuery!jquery";
+import "expose-loader?exposes=$,jQuery!jquery";
 import "jquery-ui";
 import "slickgrid/lib/jquery.event.drag-2.3.0.js";
 // Now we load SlickGrid's library folders, in dependency order
