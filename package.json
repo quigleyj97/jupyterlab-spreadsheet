@@ -27,20 +27,21 @@
     "@jupyterlab/application": "^3.0.4",
     "@jupyterlab/apputils": "^3.0.3",
     "@jupyterlab/docregistry": "^3.0.4",
-    "@lumino/coreutils": "^1.5.3",
-    "@lumino/disposable": "^1.3.5",
-    "@lumino/widgets": "^1.16.1",
-    "expose-loader": "^0.7.5",
-    "jquery": "^3.5.0",
+    "@lumino/coreutils": "^1.8.0",
+    "@lumino/disposable": "^1.7.0",
+    "@lumino/widgets": "^1.23.0",
+    "expose-loader": "^3.0.0",
+    "jquery": "^3.6.0",
     "jquery-ui": "^1.12.1",
+    "rxjs": "^7.2.0",
     "slickgrid": "^2.3.21",
-    "xlsx": "^0.15.5"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@types/slickgrid": "^2.1.27",
-    "@typescript-eslint/eslint-plugin": "^2.8.0",
-    "@typescript-eslint/parser": "^2.8.0",
-    "eslint": "^6.7.0",
-    "typescript": "^3.8.0"
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "eslint": "^7.30.0",
+    "typescript": "^4.3.5"
   }
 }
