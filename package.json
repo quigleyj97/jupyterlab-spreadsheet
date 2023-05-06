@@ -24,18 +24,18 @@
   "license": "BSD-3-Clause",
   "private": false,
   "dependencies": {
-    "@jupyterlab/application": "^3.0.4",
-    "@jupyterlab/apputils": "^3.0.3",
-    "@jupyterlab/docregistry": "^3.0.4",
-    "@lumino/coreutils": "^1.8.0",
-    "@lumino/disposable": "^1.7.0",
-    "@lumino/widgets": "^1.23.0",
+    "@jupyterlab/application": "^4.0.0-rc.1",
+    "@jupyterlab/apputils": "^4.0.0-rc.1",
+    "@jupyterlab/docregistry": "^4.0.0-rc.1",
+    "@lumino/coreutils": "^2.1.1",
+    "@lumino/disposable": "^2.1.1",
+    "@lumino/widgets": "^2.1.1",
     "expose-loader": "^3.0.0",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.12.1",
     "rxjs": "^7.2.0",
     "slickgrid": "^2.3.21",
-    "xlsx": "^0.17.0"
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/slickgrid": "^2.1.27",

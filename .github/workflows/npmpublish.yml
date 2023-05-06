@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
-      - run: yarn --frozen-lockfile
-      - run: yarn run build
+          node-version: 16
+      - run: npm ci
+      - run: npm run build
 
   publish-npm:
     needs: build
@@ -27,8 +27,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: yarn --frozen-lockfile
-      - run: yarn run build
+      - run: npm ci
+      - run: npm run build
       - run: npm publish
         env:
           # You'll need to create your own npm_token if you fork this project and publish it

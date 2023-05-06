@@ -21,11 +21,11 @@ jobs:
         node-version: 12.x
     # run build/lint first to catch errors early
     - name: Install dependencies
-      run: yarn --frozen-lockfile
+      run: npm ci
     - name: Build Typescript sources
-      run: yarn run build
+      run: npm run build
     - name: Lint source
-      run: yarn lint
+      run: npm run lint
     - name: Use JupyterLab
       run: python -m pip install --upgrade jupyterlab
     - name: Install extension
