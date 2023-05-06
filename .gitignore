@@ -3,6 +3,9 @@ node_modules/
 yarn-error.log
 # Jupyter
 .ipynb_checkpoints/
+jupyterlab-spreadsheet/labextension
+*.egg-info
+__pycache__
 
 # Misc
 .DS_Store

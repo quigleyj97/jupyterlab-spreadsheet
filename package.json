@@ -4,10 +4,13 @@
   "description": "Adds a spreadsheet viewer to JupyterLab",
   "main": "lib/index.js",
   "jupyterlab": {
-    "extension": true
+    "extension": true,
+    "outputDir": "jupyterlab-spreadsheet/labextension"
   },
   "scripts": {
     "build": "tsc",
+    "build:lab": "jupyter labextension build .",
+    "install:lab": "jupyter labextension develop . --overwrite",
     "lint": "eslint --ext .ts src/**"
   },
   "keywords": [
@@ -17,10 +20,24 @@
   ],
   "files": [
     "lib/*.js",
-    "style/*.css"
+    "style/*.css",
+    "jupyterlab-spreadsheet/**"
   ],
   "repository": "https://github.com/quigleyj97/jupyterlab-spreadsheet",
-  "author": "Joe Quigley",
+  "homepage": "https://github.com/quigleyj97/jupyterlab-spreadsheet",
+  "author": {
+    "name": "Joe Quigley"
+  },
+  "contributors": [
+    {
+      "name": "Mridul Seth",
+      "email": "github@mriduls.com",
+      "url": "https://mriduls.com"
+    },
+    {
+      "name": "NQuigley02"
+    }
+  ],
   "license": "BSD-3-Clause",
   "private": false,
   "dependencies": {
@@ -38,6 +55,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@jupyterlab/builder": "^4.0.0-rc.1",
     "@types/slickgrid": "^2.1.27",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
