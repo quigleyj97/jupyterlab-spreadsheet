@@ -5,7 +5,6 @@ import "../style/widget.css";
 import { Subscription } from "rxjs";
 
 export class SpreadsheetWidget extends Widget {
-    public readonly layout: BoxLayout;
     private readonly model: SpreadsheetModel;
     private readonly tabBar: TabBar<void>;
     private readonly grid: GridWidget;
@@ -21,8 +20,8 @@ export class SpreadsheetWidget extends Widget {
             allowDeselect: false, // there must always be a selected sheet
             tabsMovable: false
         });
-        this.layout.addWidget(this.grid);
-        this.layout.addWidget(this.tabBar);
+        (this.layout as BoxLayout).addWidget(this.grid);
+        (this.layout as BoxLayout).addWidget(this.tabBar);
         BoxLayout.setSizeBasis(this.tabBar, 26);
         BoxLayout.setStretch(this.grid, 1);
         this.tabBar.currentChanged.connect(this.handleSheetChanged, this);
